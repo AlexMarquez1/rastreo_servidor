@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.rastreo.servicioRastreo.entity.Viaje;
+import com.rastreo.servicioRastreo.entity.Viajes;
 
 @Repository
-public interface IViajeDAO extends JpaRepository<Viaje, Integer> {
+public interface IViajeDAO extends JpaRepository<Viajes, Integer> {
 
 	@Query(value="SELECT * FROM viaje WHERE idusuario = :idusuario", nativeQuery = true )
-	List<Viaje> obtenerViajesPoridUsuario(@Param("idusuario") int idusuario);
+	List<Viajes> obtenerViajesPoridUsuario(@Param("idusuario") int idusuario);
+	
+	@Query(value="SELECT * FROM viajes WHERE idconductor = :idconductor", nativeQuery = true )
+	List<Viajes> obtenerViajesPoridConductor(@Param("idconductor") int idconductor);
 }

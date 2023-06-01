@@ -27,6 +27,33 @@ public class UsuariosController {
 	@CrossOrigin(origins="*")
 	@PostMapping("/validar/usuarios")
 	private Usuarios validarUsuario(@RequestBody Usuarios usuario){
-		return this.usuarios.comprobarUsuario(usuario.getUsuario(),usuario.getPassword());
+		//Comprueba que el usuario y la contraseña sean correctos y devuelve el objeto del usuario en caso de que sean correctos
+		return this.usuarios.comprobarUsuario(usuario.getUsuario(),usuario.getContrasena());
+	}
+	
+	@CrossOrigin(origins="*")
+	@PostMapping("/nuevo/usuario")
+	private String nuevoUsuario(@RequestBody Usuarios usuario){
+		String respuesta = "";
+		Usuarios usuarioComprobar = null;
+		try {
+			
+			usuarioComprobar = this.usuarios.comprobarUsuarioExistente(usuario.getUsuario());
+			
+			if(usuarioComprobar != null) {
+				return respuesta = "Usuario existente";
+			}
+			
+			usuarioComprobar = this.usuarios.comprobarNombreExistente(usuario.getNombre());
+			if(usuarioComprobar != null) {
+				return respuesta = "Nombre de usuario existente";
+			}
+			
+			this.usuarios.save(usuario);
+			respuesta = "usuario guardado";
+		} catch (Exception e) {
+			respuesta = "Error al registrar usuario";
+		}
+		return respuesta;
 	}
 }
